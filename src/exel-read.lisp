@@ -112,10 +112,12 @@
   (vlisp:dr-axis '(600.0 -53.7457 0.0) '(825.0 -53.7457 0.0) 200.0 1700.0 0 "p2" :caption "" :dimension "" :os os))
 
 (defun make-graph (x-param y-params data &key (os *standard-output*) )
+  (let ((tr-x-param x-param)
+	(tr-y-params (mapcar #'(lambda (el) (mnas-string:translit el)) y-params)))
   (vlisp:axis-draw-spline-set nil :os os )
   (vlisp:axis-draw-multiple-graphs-by-axis-names
-   x-param (get-row x-param data)
-   y-params (mapcar #'(lambda (el) (get-row el data)) y-params) :os os))
+   tr-x-param (get-row x-param data)
+   tr-y-params (mapcar #'(lambda (el) (get-row el data)) y-params) :os os)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -127,8 +129,9 @@
     (add-row "tКМ_ВХ"     "°C"  "-" (mapcar #'math:averange (get-row  "tКМ_ВХ_1"  data) (get-row  "tКМ_ВХ_2"  data)) data)
     (add-row "tКМ_ВЫХ"    "°C"  "-" (mapcar #'math:averange (get-row  "tКМ_ВЫХ_1" data) (get-row  "tКМ_ВЫХ_2" data)) data))
   (defparameter *dt* data)
-  (with-open-file (os "~/dt.lsp" :direction :output :if-exists :supersede :external-format :utf8)
-      (progn (load-vlisp-apps :os os) (draw-all-axis :os os))
+  (with-open-file (os (let ((fname nil)) (ltk:with-ltk () (setf fname (ltk:get-save-file )) (ltk:exit-wish)) fname)
+		   :direction :output :if-exists :supersede :external-format :default)
+    (progn (load-vlisp-apps :os os) (draw-all-axis :os os))
 ;;;; p2-dt
     (make-graph "p2" '("nКМ" "KSAM"	    
 		       "GВ_КМ"
@@ -151,7 +154,7 @@
     (add-row "tКМ_ВХ"     "°C"  "-" (mapcar #'math:averange (get-row  "tКМ_ВХ_1"  data) (get-row  "tКМ_ВХ_2"  data)) data)
     (add-row "tКМ_ВЫХ"    "°C"  "-" (mapcar #'math:averange (get-row  "tКМ_ВЫХ_1" data) (get-row  "tКМ_ВЫХ_2" data)) data))
   (defparameter *gt* data)
-  (with-open-file (os "~/gt.lsp" :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (os (let ((fname nil)) (ltk:with-ltk () (setf fname (ltk:get-save-file )) (ltk:exit-wish)) fname) :direction :output :if-exists :supersede :external-format :default)
     (progn (load-vlisp-apps :os os) (draw-all-axis :os os))
 ;;;; p2-gt
     (make-graph "p2" '("nКМ" "KSAM"	    

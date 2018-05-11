@@ -6,7 +6,7 @@
   :version "0.1.1"
   :author ""
   :license ""
-  :depends-on (#:str #:vlisp #:math)
+  :depends-on (#:str #:vlisp #:math #:ltk #:mnas-string )
   :components ((:module "src"
                 :components
                 ((:file "exel-read"))))
