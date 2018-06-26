@@ -6,7 +6,7 @@
   :version "0.1.1"
   :author ""
   :license ""
-  :depends-on (#:str #:vlisp #:math #:ltk #:mnas-string )
+  :depends-on (#:str #:vlisp #:math #:ltk #:mnas-string #:mnas-xlsx #:xlsx #:mnas-file-dialog #:lst-arr)
   :components ((:module "src"
                 :components
                 ((:file "exel-read"))))
@@ -15,3 +15,4 @@
   #.(read-file-string
      (subpathname *load-pathname* "README.markdown"))
   :in-order-to ((test-op (test-op "exel-read-test"))))
+
