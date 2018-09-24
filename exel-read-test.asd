@@ -5,7 +5,7 @@
 (defsystem "exel-read-test"
   :defsystem-depends-on ("prove-asdf")
   :author ""
-  :license ""
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on (#:exel-read #:prove))
   :components ((:module "tests"
                 :components ((:test-file "exel-read"))))
