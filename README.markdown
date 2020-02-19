@@ -1,5 +1,0 @@
-# Exel-Read
-
-## Usage
-
-## Installation

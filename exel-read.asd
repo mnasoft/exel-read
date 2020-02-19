@@ -13,6 +13,6 @@
   :description ""
   :long-description
   #.(read-file-string
-     (subpathname *load-pathname* "README.markdown"))
+     (subpathname *load-pathname* "README.org"))
   :in-order-to ((test-op (test-op "exel-read-test"))))
 

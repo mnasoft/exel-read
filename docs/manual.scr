@@ -1,0 +1,38 @@
+@begin(section)
+@title(Overview)
+
+This is where you explain what your project does.
+
+@end(section)
+
+@begin(section)
+@title(API Reference)
+
+And this is where you list your project's functionality. Read the tutorial to
+learn how to do this.
+
+@end(section)
+
+@begin(section)
+@title(Графы)
+@begin(list)
+ @item(system-graph @image[src=./system-graph.gv.png]())
+ @item(call-graph   @image[src=./call-graph.gv.png]())
+ @item(symbol-graph @image[src=./symbol-graph.gv.png]())
+ @item(class-graph  @image[src=./class-graph.gv.png]())
+@end(list)
+@end(section)
+
+@begin(section)
+@title(Функции)
+@cl:with-package[name="exel-read"](
+ @cl:doc(function r-exel)
+ @cl:doc(function read-exel)
+ @cl:doc(function get-row)
+ @cl:doc(function split-string-name-dim)
+ @cl:doc(macro add-row)
+ @cl:doc(function exel-pname-dimension)
+ @cl:doc(function string-to-float-string)
+ @cl:doc(function read-from-exel-nds)
+)
+@end(section)
