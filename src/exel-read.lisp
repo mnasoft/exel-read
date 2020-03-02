@@ -104,8 +104,6 @@
  @item(title - заголовок окна диалога для откріваемого файла. )
 @end(list)
 
-
-
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (r-exel)
@@ -130,11 +128,3 @@
 " " "))))
 		   el1))
 	      (nthcdr skip-lines-number sp-lines)))))
-
-
-;(block skip-lines-and-replace-nil-to-empty-string
-;      (mapcar #'(lambda (el1)
-;		  (mapcar
-;		   #'(lambda (el) (if el el ""))
-;		   el1))
-;	      (nthcdr skip-lines-number sp-lines)))
