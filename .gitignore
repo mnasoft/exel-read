@@ -1,14 +1,26 @@
+.directory
+*~
+*.bak
+*.FASL
+*.fasl
+*.lisp-temp
 build
 \#*\#
-.\#*
 
-*.fasl
+README.pdf
+README.tex
+README.html
+
+Developers-memo.html
+Developers-memo.pdf
+Developers-memo.tex
+
 *.dx32fsl
 *.dx64fsl
 *.lx32fsl
 *.lx64fsl
 *.x86f
-*~
+
 
 
 
