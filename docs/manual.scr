@@ -1,26 +1,16 @@
-@begin(section)
-@title(Overview)
+@begin(section) @title(Обзор)
 
-This is where you explain what your project does.
+Проект предназначен для осуществления чтения данных из файлов EXEL.
 
-@end(section)
-
-@begin(section)
-@title(API Reference)
-
-And this is where you list your project's functionality. Read the tutorial to
-learn how to do this.
-
-@end(section)
-
-@begin(section)
-@title(Графы)
-@begin(list)
- @item(system-graph @image[src=./system-graph.gv.png]())
- @item(call-graph   @image[src=./call-graph.gv.png]())
- @item(symbol-graph @image[src=./symbol-graph.gv.png]())
- @item(class-graph  @image[src=./class-graph.gv.png]())
-@end(list)
+ @begin(section) @title(Графы)
+  @begin(list)
+   @item(system-graph @image[src=./system-graph.gv.png]())
+   @item(call-graph   @image[src=./call-graph.gv.png]())
+   @item(symbol-graph @image[src=./symbol-graph.gv.png]())
+   @item(class-graph  @image[src=./class-graph.gv.png]())
+  @end(list)
+ @end(section)
+ 
 @end(section)
 
 @begin(section)

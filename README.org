@@ -1,5 +1,8 @@
-* Exel-Read 
-
-** Usage
-
-** Installation
+* Проект Exel-Read
+** Обзор
+Проект предназначен для осуществления чтения данных из файлов EXEL.
+** Документация
+Для сборки документации используйте следующую команду.
+#+BEGIN_SRC lisp
+(mnas-package:make-codex-documentation  :exel-read :exel-read)
+#+END_SRC
