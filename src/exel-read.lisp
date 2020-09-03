@@ -3,14 +3,12 @@
 
 (in-package :exel-read)
 
-(annot:enable-annot-syntax)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun split-exel-line (line) (str:split #\Tab (string-trim '(#\Space #\Return #\Newline) line)))
 
-@export
-@annot.doc:doc
+(export 'read-exel )
+(defun read-exel (file-name)
 "@b(Описание:) функция @b(read-exel) считывает данные из файла с именем @b(file-name), 
 который был получен путем операций копирования и вставки из файла EXEL в текстовый файл 
 с кодировкой utf8 (можно (нужно) использовать emacs в качестве редактора).
@@ -26,17 +24,15 @@
    (\"+\" \" \" \"П\" \"Дт\" \"В5Г80011035 Проставка\" \"А3\" \"3A\" \"19\" \"1.000000\" \"шт\"))
 @end(code)
 "
-(defun read-exel (file-name)
   (let ((rez nil))
     (with-open-file (stream file-name :direction :input :external-format :utf8)
       (do ((line (read-line stream nil) (read-line stream nil)))
 	  ((null line) (reverse rez))
 	(push (split-exel-line line) rez)))))
 
-@export
-@annot.doc:doc
-"@b(Описание:) split-string-name-dim "
+(export 'split-string-name-dim )
 (defun split-string-name-dim (separator str)
+"@b(Описание:) split-string-name-dim "
   (let ((rez (str:split separator str)))
     (cond
       ((= 1 (length rez)) (append rez '("-")))
@@ -44,12 +40,10 @@
       ((< 2 (length rez)) (list (first rez) (second rez))))))
 
 
-@export
-@annot.doc:doc
-"@b(Описание:) exel-pname-dimension "
+(export 'exel-pname-dimension )
 (defun exel-pname-dimension (lst)
+"@b(Описание:) exel-pname-dimension "
   (mapcar #'(lambda (el) (append (split-string-name-dim ", "(pop el)) el )) lst))
-
 ;;;;
 (defun to-underliningp (ch)
   (declare (type character ch))
@@ -63,16 +57,15 @@
   (mapcar #'(lambda (el) (append (list (replace-to-underlining (pop el))) el )) lst))
 ;;;;
 
-@export
-@annot.doc:doc
-"@b(Описание:) get-row "
+(export 'get-row )
 (defun get-row (key data &key (col-ignore 3))
+"@b(Описание:) get-row "
   (let ((rez   (assoc key data :test #'equal)))
     (dotimes (i col-ignore rez)
       (pop rez))))
 
-@export
-@annot.doc:doc
+(export 'string-to-float-string )
+(defun string-to-float-string (str)
 "@b(Описание:) функция @b(string-to-float-string) выполняет преобразование строки в число.
 
  @b(Пример использования:)
@@ -85,7 +78,6 @@
  (string-to-float-string \"Abra-Codabra\") => \"Abra-Codabra\"
 @end(code)
 "
-(defun string-to-float-string (str)
   (let ((str-clean
 	 (substitute #\- #\: (string-trim '(#\Space) (substitute #\. #\, str)))))
     (if (string= "" str-clean)
@@ -95,8 +87,8 @@
 	    ((and (= (length str-clean) num) (numberp rez)) (float rez))
 	    (t str))))))
 
-@export
-@annot.doc:doc
+(export 'read-from-exel-nds )
+(defun read-from-exel-nds (fname)
 "@b(Описание:) read-from-exel-nds выполняет разбор файла, с данными импортированными из ячеек exel в которых:
 - первая колонка - обозначение и размерность;
 - вторая колонка - обозначение сигнала.
@@ -108,20 +100,18 @@
    (\"p2\" \"-\" 101.0 102.0 103.0 104.0 105.0 103.0))
 @end(code)
 "
-(defun read-from-exel-nds (fname)
   (mapcar #'(lambda (el) (mapcar #'string-to-float-string el))
 	  (exel-to-underlining (exel-pname-dimension (read-exel fname)))))
 
-@export
-@annot.doc:doc
-"@b(Описание:) add-row "
+(export 'add-row )
 (defmacro add-row (p-name p-dim p-signal lst place)
+"@b(Описание:) add-row "
   `(push (append (list ,p-name ,p-dim ,p-signal) ,lst) ,place))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@export
-@annot.doc:doc
+(export 'r-exel )
+(defun r-exel (&key (title "Выберите файл Εχελ, содержащий сторки спецификации, экспортированной из IT-Предприятие")
+		 (skip-lines-number 3 ))
 "@b(Описание:) функция @b(r-exel) выполняет чтение файла xlsx, указываемого в диалоговом окне.
 Предназначена для импортирования содержимого спецификаций, выгружаемых из системы IT-Предприятие.
 
@@ -145,8 +135,6 @@
   )
 @end(code)
 "
-(defun r-exel (&key (title "Выберите файл Εχελ, содержащий сторки спецификации, экспортированной из IT-Предприятие")
-		 (skip-lines-number 3 )) 
   (let* ((exel-lines (xlsx:as-matrix
 		      (mnas-xlsx:read-sheet
 		       (mnas-file-dialog:get-open-file
