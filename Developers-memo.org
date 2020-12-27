@@ -1,15 +1,8 @@
-* Ссылки
-1) Операции git  [[file:~/org/sbcl/Git-memo.org][Git-memo.org]]
-2) [[file:~/org/sbcl/codex.org][Генерирование документации при помощи Codex]]
-3) http://commondoc.github.io/codex/docs/tutorial.html
-4) [[file:~/.slynkrc]]
-5) [[~/.sbclrc]]
-6) [[file://n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/index.org][index.org]]
-
+* Ссылки [[~/org/sbcl/sbcl-referencies.org][Ссылки]]
 * Генерирование документации
 #+name: make-html
 #+BEGIN_SRC lisp
-  (mnas-package:make-codex-documentation  :exel-read :exel-read)
+  (mnas-package:make-codex-graphs  :exel-read :exel-read)
 #+END_SRC
 * Публикация
 #+name: publish

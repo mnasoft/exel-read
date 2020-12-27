@@ -4,5 +4,5 @@
 ** Документация
 Для сборки документации используйте следующую команду.
 #+BEGIN_SRC lisp
-(mnas-package:make-codex-documentation  :exel-read :exel-read)
+(mnas-package:make-codex-graphs  :exel-read :exel-read)
 #+END_SRC
