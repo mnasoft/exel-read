@@ -1,17 +1,27 @@
 (defpackage exel-read 
-  (:use :cl))
+  (:use :cl)
+  (:export read-exel
+           split-string-name-dim
+           exel-pname-dimension
+           get-row
+           string-to-float-string
+           read-from-exel-nds
+           add-row
+           r-exel
+           ))
 
 (in-package :exel-read)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun split-exel-line (line) (str:split #\Tab (string-trim '(#\Space #\Return #\Newline) line)))
+(defun split-exel-line (line)
+  (str:split #\Tab (string-trim '(#\Space #\Return #\Newline) line)))
 
-(export 'read-exel )
 (defun read-exel (file-name)
-"@b(Описание:) функция @b(read-exel) считывает данные из файла с именем @b(file-name), 
-который был получен путем операций копирования и вставки из файла EXEL в текстовый файл 
-с кодировкой utf8 (можно (нужно) использовать emacs в качестве редактора).
+"@b(Описание:) функция @b(read-exel) считывает данные из файла с
+именем @b(file-name), который был получен путем операций копирования и
+вставки из файла EXEL в текстовый файл с кодировкой
+utf8 (можно (нужно) использовать emacs в качестве редактора).
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -30,7 +40,6 @@
 	  ((null line) (reverse rez))
 	(push (split-exel-line line) rez)))))
 
-(export 'split-string-name-dim )
 (defun split-string-name-dim (separator str)
 "@b(Описание:) split-string-name-dim "
   (let ((rez (str:split separator str)))
@@ -39,8 +48,6 @@
       ((= 2 (length rez)) rez)
       ((< 2 (length rez)) (list (first rez) (second rez))))))
 
-
-(export 'exel-pname-dimension )
 (defun exel-pname-dimension (lst)
 "@b(Описание:) exel-pname-dimension "
   (mapcar #'(lambda (el) (append (split-string-name-dim ", "(pop el)) el )) lst))
@@ -57,14 +64,13 @@
   (mapcar #'(lambda (el) (append (list (replace-to-underlining (pop el))) el )) lst))
 ;;;;
 
-(export 'get-row )
+
 (defun get-row (key data &key (col-ignore 3))
 "@b(Описание:) get-row "
   (let ((rez   (assoc key data :test #'equal)))
     (dotimes (i col-ignore rez)
       (pop rez))))
 
-(export 'string-to-float-string )
 (defun string-to-float-string (str)
 "@b(Описание:) функция @b(string-to-float-string) выполняет преобразование строки в число.
 
@@ -87,9 +93,10 @@
 	    ((and (= (length str-clean) num) (numberp rez)) (float rez))
 	    (t str))))))
 
-(export 'read-from-exel-nds )
 (defun read-from-exel-nds (fname)
-"@b(Описание:) read-from-exel-nds выполняет разбор файла, с данными импортированными из ячеек exel в которых:
+"@b(Описание:) read-from-exel-nds выполняет разбор файла, с данными
+импортированными из ячеек exel в которых:
+
 - первая колонка - обозначение и размерность;
 - вторая колонка - обозначение сигнала.
 
@@ -103,17 +110,17 @@
   (mapcar #'(lambda (el) (mapcar #'string-to-float-string el))
 	  (exel-to-underlining (exel-pname-dimension (read-exel fname)))))
 
-(export 'add-row )
+
 (defmacro add-row (p-name p-dim p-signal lst place)
 "@b(Описание:) add-row "
   `(push (append (list ,p-name ,p-dim ,p-signal) ,lst) ,place))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'r-exel )
 (defun r-exel (&key (title "Выберите файл Εχελ, содержащий сторки спецификации, экспортированной из IT-Предприятие")
 		 (skip-lines-number 3 ))
-"@b(Описание:) функция @b(r-exel) выполняет чтение файла xlsx, указываемого в диалоговом окне.
-Предназначена для импортирования содержимого спецификаций, выгружаемых из системы IT-Предприятие.
+"@b(Описание:) функция @b(r-exel) выполняет чтение файла xlsx,
+указываемого в диалоговом окне.  Предназначена для импортирования
+содержимого спецификаций, выгружаемых из системы IT-Предприятие.
 
  @b(Возвращает:) Состав файла в виде списка списков.
 
@@ -152,3 +159,29 @@
 " " "))))
 		   el1))
 	      (nthcdr skip-lines-number sp-lines)))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun foo (file-name &key (skip-lines-number 0))
+"@b(Описание:) функция @b(r-exel) выполняет чтение файла xlsx,
+указываемого в диалоговом окне.  Предназначена для импортирования
+содержимого спецификаций, выгружаемых из системы IT-Предприятие.
+
+ @b(Возвращает:) Состав файла в виде списка списков.
+
+ @b(Переменые:)
+@begin(list)
+ @item(skip-lines-number - количество пропускаемых строк.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (foo)
+@end(code)
+"
+  (let* ((exel-lines (xlsx:as-matrix
+		      (mnas-xlsx:read-sheet file-name)))
+	 (sp-lines (lst-arr:array2d->list-list-by-row exel-lines)))
+    sp-lines))
+
